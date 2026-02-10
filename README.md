@@ -44,6 +44,22 @@ python app.py
 http://localhost:5000
 ```
 
+### Produção
+
+⚠️ **IMPORTANTE**: Para ambiente de produção:
+
+1. Desabilite o modo debug:
+```bash
+export FLASK_DEBUG=False
+python app.py
+```
+
+2. Use um servidor WSGI de produção como Gunicorn:
+```bash
+pip install gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 app:app
+```
+
 ## 💻 Tecnologias Utilizadas
 
 - **Backend**: Python Flask
