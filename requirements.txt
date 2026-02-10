@@ -1,0 +1,3 @@
+# Dependências do Sistema de IA para Contabilidade
+# O sistema funciona com Python 3.6+ sem dependências externas
+# Usa apenas bibliotecas padrão do Python
