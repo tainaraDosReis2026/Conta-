@@ -22,7 +22,7 @@ class Empresa(db.Model):
     endereco = db.Column(db.String(300))
     telefone = db.Column(db.String(20))
     email = db.Column(db.String(100))
-    data_cadastro = db.Column(db.DateTime, default=datetime.utcnow)
+    data_cadastro = db.Column(db.DateTime, default=lambda: datetime.utcnow())
 
     def to_dict(self):
         return {
@@ -62,7 +62,7 @@ class Cliente(db.Model):
     endereco = db.Column(db.String(300))
     telefone = db.Column(db.String(20))
     email = db.Column(db.String(100))
-    data_cadastro = db.Column(db.DateTime, default=datetime.utcnow)
+    data_cadastro = db.Column(db.DateTime, default=lambda: datetime.utcnow())
 
     def to_dict(self):
         return {
@@ -84,7 +84,7 @@ class Fornecedor(db.Model):
     endereco = db.Column(db.String(300))
     telefone = db.Column(db.String(20))
     email = db.Column(db.String(100))
-    data_cadastro = db.Column(db.DateTime, default=datetime.utcnow)
+    data_cadastro = db.Column(db.DateTime, default=lambda: datetime.utcnow())
 
     def to_dict(self):
         return {
@@ -101,9 +101,9 @@ class Fornecedor(db.Model):
 class Lancamento(db.Model):
     """Lançamentos contábeis"""
     id = db.Column(db.Integer, primary_key=True)
-    data = db.Column(db.Date, nullable=False, default=datetime.utcnow)
+    data = db.Column(db.Date, nullable=False, default=lambda: datetime.utcnow().date())
     descricao = db.Column(db.String(300), nullable=False)
-    valor = db.Column(db.Float, nullable=False)
+    valor = db.Column(db.Numeric(10, 2), nullable=False)
     tipo = db.Column(db.String(20), nullable=False)  # RECEITA, DESPESA
     categoria = db.Column(db.String(100))
     conta_id = db.Column(db.Integer, db.ForeignKey('plano_contas.id'))
@@ -143,6 +143,8 @@ def index():
 def empresas():
     if request.method == 'POST':
         dados = request.json
+        if not dados or 'nome' not in dados or 'cnpj' not in dados:
+            return jsonify({'error': 'Nome e CNPJ são obrigatórios'}), 400
         empresa = Empresa(
             nome=dados['nome'],
             cnpj=dados['cnpj'],
@@ -338,7 +340,8 @@ def lancamento_detail(id):
     
     if request.method == 'PUT':
         dados = request.json
-        lancamento.data = datetime.strptime(dados['data'], '%Y-%m-%d').date()
+        if 'data' in dados:
+            lancamento.data = datetime.strptime(dados['data'], '%Y-%m-%d').date()
         lancamento.descricao = dados.get('descricao', lancamento.descricao)
         lancamento.valor = float(dados.get('valor', lancamento.valor))
         lancamento.tipo = dados.get('tipo', lancamento.tipo)

@@ -616,7 +616,8 @@
             tabs.forEach(tab => tab.classList.remove('active'));
             contents.forEach(content => content.classList.remove('active'));
             
-            event.target.classList.add('active');
+            const clickedTab = Array.from(tabs).find(tab => tab.getAttribute('onclick').includes(tabName));
+            if (clickedTab) clickedTab.classList.add('active');
             document.getElementById(tabName).classList.add('active');
             
             // Carregar dados ao trocar de aba
