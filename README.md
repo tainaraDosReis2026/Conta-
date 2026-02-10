@@ -18,11 +18,22 @@ Um sistema inteligente de contabilidade para empresas que **funciona completamen
 git clone https://github.com/tainaraDosReis2026/Conta-.git
 cd Conta-
 
-# Execute (requer Python 3.6+)
+# Execute o exemplo básico (requer Python 3.6+)
 python3 accounting_ai.py
+
+# Ou use a interface interativa CLI
+python3 cli.py
+
+# Ou execute todos os exemplos
+python3 examples.py
+
+# Execute os testes
+python3 test_accounting.py
 ```
 
 ## 🚀 Uso Rápido
+
+### Via Código Python
 
 ```python
 from accounting_ai import AccountingAI, TransactionType
@@ -41,6 +52,18 @@ empresa.add_transaction("Aluguel", 1000.00, TransactionType.DESPESA)
 # Gere relatório completo
 print(ai.generate_report("Minha Empresa"))
 ```
+
+### Via Interface CLI (Linha de Comando)
+
+```bash
+python3 cli.py
+```
+
+A interface CLI oferece um menu interativo para:
+- Criar e gerenciar empresas
+- Adicionar transações de forma guiada
+- Visualizar relatórios e recomendações
+- Listar todas as empresas cadastradas
 
 ## 📋 Tipos de Transações
 
@@ -134,10 +157,13 @@ O sistema analisa automaticamente:
 
 ```
 Conta-/
-├── accounting_ai.py    # Sistema principal de IA
-├── examples.py         # Exemplos de uso
-├── requirements.txt    # Dependências (nenhuma externa!)
-└── README.md          # Esta documentação
+├── accounting_ai.py      # Sistema principal de IA
+├── cli.py                # Interface de linha de comando interativa
+├── examples.py           # Exemplos de uso diversos
+├── test_accounting.py    # Testes automatizados
+├── requirements.txt      # Dependências (nenhuma externa!)
+├── .gitignore           # Arquivos ignorados pelo git
+└── README.md            # Esta documentação
 ```
 
 ## 🔧 Classes Principais
@@ -150,6 +176,25 @@ Representa uma empresa e suas transações
 
 ### `Transaction`
 Representa uma transação contábil com categorização automática
+
+### `AccountingCLI`
+Interface de linha de comando para uso interativo
+
+## 🧪 Testes
+
+O sistema inclui testes automatizados que validam:
+
+- Criação de empresas sem condições iniciais
+- Adição e gerenciamento de transações
+- Cálculos de saldo e balanços
+- Categorização automática de transações
+- Geração de relatórios
+- Recomendações da IA
+
+Execute os testes com:
+```bash
+python3 test_accounting.py
+```
 
 ## 💻 Requisitos
 
