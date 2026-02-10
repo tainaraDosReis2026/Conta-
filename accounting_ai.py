@@ -22,6 +22,18 @@ class TransactionType(Enum):
 class Transaction:
     """Representa uma transação contábil"""
     
+    # Mapeamento de palavras-chave para categorias (IA de categorização)
+    CATEGORY_KEYWORDS = {
+        "Receitas de Vendas": ['venda', 'receita', 'pagamento cliente', 'faturamento'],
+        "Despesas com Pessoal": ['salário', 'folha', 'pagamento funcionário'],
+        "Despesas com Instalações": ['aluguel', 'condomínio', 'iptu'],
+        "Despesas com Utilidades": ['energia', 'água', 'internet', 'telefone'],
+        "Custo de Mercadorias": ['fornecedor', 'compra', 'matéria-prima'],
+        "Despesas com Marketing": ['marketing', 'publicidade', 'propaganda'],
+        "Ativos Fixos": ['equipamento', 'máquina', 'veículo', 'imóvel'],
+        "Estoque": ['estoque', 'inventário'],
+    }
+    
     def __init__(self, description: str, amount: float, transaction_type: TransactionType, 
                  date: Optional[datetime] = None, category: Optional[str] = None):
         self.description = description
@@ -34,29 +46,12 @@ class Transaction:
         """IA para categorização automática de transações"""
         description_lower = self.description.lower()
         
-        # Receitas
-        if any(word in description_lower for word in ['venda', 'receita', 'pagamento cliente', 'faturamento']):
-            return "Receitas de Vendas"
+        # Verificar cada categoria baseada em palavras-chave
+        for category, keywords in self.CATEGORY_KEYWORDS.items():
+            if any(word in description_lower for word in keywords):
+                return category
         
-        # Despesas operacionais
-        if any(word in description_lower for word in ['salário', 'folha', 'pagamento funcionário']):
-            return "Despesas com Pessoal"
-        if any(word in description_lower for word in ['aluguel', 'condomínio', 'iptu']):
-            return "Despesas com Instalações"
-        if any(word in description_lower for word in ['energia', 'água', 'internet', 'telefone']):
-            return "Despesas com Utilidades"
-        if any(word in description_lower for word in ['fornecedor', 'compra', 'matéria-prima']):
-            return "Custo de Mercadorias"
-        if any(word in description_lower for word in ['marketing', 'publicidade', 'propaganda']):
-            return "Despesas com Marketing"
-        
-        # Ativos
-        if any(word in description_lower for word in ['equipamento', 'máquina', 'veículo', 'imóvel']):
-            return "Ativos Fixos"
-        if any(word in description_lower for word in ['estoque', 'inventário']):
-            return "Estoque"
-        
-        # Default
+        # Categoria padrão baseada no tipo de transação
         if self.transaction_type == TransactionType.RECEITA:
             return "Outras Receitas"
         elif self.transaction_type == TransactionType.DESPESA:

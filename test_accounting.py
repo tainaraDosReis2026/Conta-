@@ -50,17 +50,23 @@ def test_auto_categorization():
     
     # Teste de receitas
     t1 = company.add_transaction("Venda de produtos", 1000.00, TransactionType.RECEITA)
-    assert "Receitas de Vendas" in t1.category or "Vendas" in t1.category
+    assert t1.category == "Receitas de Vendas", f"Expected 'Receitas de Vendas', got '{t1.category}'"
     
-    # Teste de despesas
+    # Teste de despesas com pessoal
     t2 = company.add_transaction("Pagamento salários", 500.00, TransactionType.DESPESA)
-    assert "Pessoal" in t2.category
+    assert t2.category == "Despesas com Pessoal", f"Expected 'Despesas com Pessoal', got '{t2.category}'"
     
+    # Teste de despesas com instalações
     t3 = company.add_transaction("Aluguel escritório", 200.00, TransactionType.DESPESA)
-    assert "Instalações" in t3.category
+    assert t3.category == "Despesas com Instalações", f"Expected 'Despesas com Instalações', got '{t3.category}'"
     
+    # Teste de despesas com utilidades
     t4 = company.add_transaction("Conta de energia", 100.00, TransactionType.DESPESA)
-    assert "Utilidades" in t4.category
+    assert t4.category == "Despesas com Utilidades", f"Expected 'Despesas com Utilidades', got '{t4.category}'"
+    
+    # Teste de categoria padrão
+    t5 = company.add_transaction("Despesa não categorizada", 50.00, TransactionType.DESPESA)
+    assert t5.category == "Outras Despesas", f"Expected 'Outras Despesas', got '{t5.category}'"
     
     print("✅ Teste de categorização automática: PASSOU")
 
